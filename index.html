@@ -814,7 +814,7 @@ function parseInmateRecord(raw) {
   // Charges
   var chargeLines=[],dockets=[],totalBond='';
   var totalM=raw.match(/Total\s*Bond\s*Amount:\s*\$?([\d,]+\.?\d*)/i);if(totalM)totalBond='$'+totalM[1];
-  var rowRx=/^(.+?)\s{2,}(PRE-TRIAL|SENTENCED|CONVICTED|PENDING|RELEASED|ACQUITTED|DEFERRED)\s{2,}([\w\-]+)\s{2,}(.+)$/gim;
+  var rowRx=/^(.+?)\s+(PRE-TRIAL|SENTENCED|CONVICTED|PENDING|RELEASED|ACQUITTED|DEFERRED|DISMISSED)\s+([\w\-\/]+)\s+(.+)$/gim;
   var m;
   while((m=rowRx.exec(raw))!==null){var charge=m[1].trim(),status=m[2].trim(),docket=m[3].trim();if(status!=='DISMISSED'){chargeLines.push(charge+' ['+status+']');if(!dockets.includes(docket))dockets.push(docket);}}
   if(!chargeLines.length){lines.forEach(function(l){var parts=l.split('\t');if(parts.length>=3){var charge=parts[0].trim(),status=(parts[1]||'').trim(),docket=(parts[2]||'').trim();if(charge&&status&&/PRE-TRIAL|SENTENCED|CONVICTED|PENDING/i.test(status)){chargeLines.push(charge+' ['+status+']');if(docket&&!dockets.includes(docket))dockets.push(docket);}}});}
